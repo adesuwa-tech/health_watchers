@@ -11,6 +11,8 @@ import { ThemeSync } from '@/components/ThemeSync';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
 import { PWAInit } from '@/components/PWAInit';
 import { SessionTimeoutWarning } from '@/components/SessionTimeoutWarning';
+import { CommandPaletteProvider, CommandPalette } from '@/components/CommandPalette';
+import { GlobalHotkeys } from '@/components/GlobalHotkeys';
 import './globals.css';
 
 const inter = Inter({
@@ -91,16 +93,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-neutral-50 font-sans antialiased dark:bg-neutral-900">
-        <ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <QueryProvider>
               <AuthProvider>
-                <ThemeSync />
-                <PWAInit />
-                <OfflineIndicator />
-                <SessionTimeoutWarning />
-                {children}
-                <Toaster />
+                <CommandPaletteProvider>
+                  <ThemeSync />
+                  <PWAInit />
+                  <OfflineIndicator />
+                  <SessionTimeoutWarning />
+                  <GlobalHotkeys />
+                  <CommandPalette />
+                  {children}
+                  <Toaster />
+                </CommandPaletteProvider>
               </AuthProvider>
             </QueryProvider>
           </NextIntlClientProvider>
